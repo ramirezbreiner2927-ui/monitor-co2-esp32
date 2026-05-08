@@ -1,6 +1,9 @@
 # 🌿 Monitor CO₂ con ESP32
 
-Proyecto de monitoreo de Dióxido de Carbono en tiempo real usando un sensor MQ135 y un ESP32, con dashboard web y control remoto del LED integrado.
+## Introducción 
+El presente proyecto consiste en el desarrollo de un sistema de monitoreo de dióxido de carbono (CO₂) en tiempo real utilizando un sensor MQ135 y un microcontrolador ESP32. La solución implementada integra tecnologías de Internet de las Cosas (IoT) para capturar, procesar y visualizar datos ambientales mediante un tablero web interactivo accesible para los usuarios.
+
+Además del monitoreo ambiental, el sistema incorpora funcionalidades de control remoto del LED integrado del ESP32, permitiendo la interacción en tiempo real entre la plataforma web y el dispositivo físico. El proyecto fue desarrollado con el propósito de aplicar conocimientos de programación, electrónica y desarrollo web, demostrando la integración eficiente entre hardware y software en sistemas inteligentes conectados.
 
 ## 👥 Equipo
 
