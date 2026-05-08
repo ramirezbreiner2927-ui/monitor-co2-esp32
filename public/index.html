@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard CO₂</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #0f172a, #1e293b); color: white; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; background: #020617; padding: 15px 20px; }
+    .navbar h2 { margin: 0; }
+    .nav-buttons { display: flex; gap: 10px; }
+    .nav-buttons button { padding: 8px 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+    .btn-logout { background: #ef4444; color: white; }
+    .btn-about { background: #38bdf8; color: black; }
+    .btn-led { background: #334155; color: #94a3b8; border: 2px solid #475569; min-width: 130px; }
+    .btn-led.led-on { background: #1d4ed8; color: white; border-color: #3b82f6; box-shadow: 0 0 20px rgba(59,130,246,0.8); animation: pulso 2s infinite; }
+    @keyframes pulso { 0%,100% { box-shadow: 0 0 18px rgba(59,130,246,0.7); } 50% { box-shadow: 0 0 35px rgba(59,130,246,1); } }
+    .container { max-width: 900px; margin: auto; padding: 20px; text-align: center; }
+    .card { background: #1e293b; border-radius: 20px; padding: 20px; margin: 20px 0; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+    .valor { font-size: 60px; font-weight: bold; }
+    .semaforo { width: 120px; height: 120px; border-radius: 50%; margin: 20px auto; transition: 0.3s; }
+    .estado { font-size: 20px; margin-top: 10px; font-weight: bold; }
+    canvas { max-width: 100%; }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <h2> Monitor CO₂</h2>
+  <div class="nav-buttons">
+    <button class="btn-led" id="btnLed" onclick="toggleLed()">💡 LED — OFF</button>
+    <button class="btn-about" onclick="window.location='/about.html'">👥 About Us</button>
+    <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <div class="valor" id="co2">-- ppm</div>
+    <div class="semaforo" id="semaforo"></div>
+    <div class="estado" id="estado">Cargando...</div>
+  </div>
+  <div class="card">
+    <canvas id="grafica"></canvas>
+  </div>
+</div>
+
+<script>
+const token = localStorage.getItem("token");
+if (!token) window.location = "/login.html";
+
+const chart = new Chart(document.getElementById('grafica').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{ label: 'CO₂ (ppm)', data: [], borderColor: '#38bdf8', backgroundColor: 'rgba(56,189,248,0.15)', tension: 0.3 }]
+  },
+  options: {
+    plugins: { legend: { labels: { color: 'white' } } },
+    scales: { x: { ticks: { color: 'white' } }, y: { ticks: { color: 'white' } } }
+  }
+});
+
+async function cargarDatos() {
+  try {
+    const res = await fetch('/datos', { headers: { Authorization: token } });
+    if (res.status === 401) { logout(); return; }
+    const data = await res.json();
+    if (data.length > 0) {
+      const ultimo = data[0].co2;
+      document.getElementById('co2').innerText = ultimo.toFixed(0) + " ppm";
+      let color = "#22c55e", estado = " Aire limpio";
+      if (ultimo > 800)  { color = "#facc15"; estado = " Calidad moderada"; }
+      if (ultimo > 1200) { color = "#ef4444"; estado = " Aire contaminado"; }
+      const s = document.getElementById('semaforo');
+      s.style.background = color;
+      s.style.boxShadow = `0 0 40px ${color}`;
+      document.getElementById('estado').innerText = estado;
+      chart.data.labels = data.map((_, i) => i + 1);
+      chart.data.datasets[0].data = data.map(d => d.co2);
+      chart.update();
+    }
+  } catch(e) { console.error(e); }
+}
+
+setInterval(cargarDatos, 2000);
+cargarDatos();
+
+let ledOn = false;
+
+async function toggleLed() {
+  const btn = document.getElementById('btnLed');
+  btn.disabled = true;
+  const res = await fetch(ledOn ? '/led/off' : '/led/on', {
+    method: 'POST',
+    headers: { Authorization: token }
+  });
+  if (res.ok) {
+    ledOn = !ledOn;
+    btn.innerText = ledOn ? ' LED — ON' : ' LED — OFF';
+    btn.classList.toggle('led-on', ledOn);
+  }
+  btn.disabled = false;
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  window.location = "/login.html";
+}
+</script>
+
+</body>
+</html>
