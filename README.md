@@ -303,4 +303,24 @@ El desarrollo de este proyecto permitió implementar un sistema funcional de mon
 Asimismo, la creación de una plataforma web con módulos de login, registro, dashboard y control remoto del LED permitió fortalecer la interacción entre el usuario y el dispositivo físico, ofreciendo una experiencia más dinámica e intuitiva.
 
 La integración de tecnologías como HTML, CSS, JavaScript, Node.js y ESP32 evidenció la capacidad de desarrollar soluciones tecnológicas conectadas, capaces de combinar hardware y software en un entorno práctico y funcional.
+---
+
+# 🧪 Documentación de API
+
+La API REST del proyecto fue documentada utilizando **ApiDog**, permitiendo visualizar y probar fácilmente cada uno de los endpoints disponibles del sistema de monitoreo de CO₂.
+
+A través de esta documentación es posible consultar rutas, métodos HTTP, parámetros y respuestas del servidor de manera interactiva.
+
+## 🔗 Acceso a la documentación
+
+👉 [Ver documentación de la API](https://orns67fxuv.apidog.io)
+
+## 📌 Funcionalidades disponibles
+
+- Pruebas de endpoints en tiempo real.
+- Visualización de solicitudes y respuestas.
+- Documentación organizada de la API REST.
+- Soporte para autenticación y pruebas HTTP.
+- Acceso rápido para desarrolladores e integradores.
+
 
