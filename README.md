@@ -86,7 +86,7 @@ Además, el diseño de la interfaz fue realizado buscando simplicidad y facilida
 </form>
 ```
 
-![Login](images/login.png)
+![Login](images/login.jpeg)
 
 ## Sign Up
 
