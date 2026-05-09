@@ -216,7 +216,7 @@ Además de brindar información del equipo, esta sección ayuda a ofrecer una vi
 
 ## 🖼️ Vista About Us
 
-![About Us](images/about us.jpeg)
+![AboutUs](images/aboutus.jpeg))
 
 ---
 
